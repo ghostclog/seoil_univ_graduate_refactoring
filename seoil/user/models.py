@@ -36,7 +36,9 @@ class Message(models.Model):
     """메세지(알림) 테이블"""
 
     user_id = models.ForeignKey( #받는 유저 아이디
-        User, on_delete=models.CASCADE
+        User, 
+        on_delete=models.CASCADE,
+        related_name="alert"
     )
     title = models.CharField( #쪽지 제목
         max_length=50,
@@ -54,13 +56,13 @@ class Message(models.Model):
         default=False,
     )
 
-    related_name="alert"
-
 class UserItems(models.Model): 
     """유저 소유 아이템 정보 테이블"""
 
     user_id = models.ForeignKey( #소유 중인 유저 아이디
-        User, on_delete=models.CASCADE
+        User, 
+        on_delete=models.CASCADE,
+        related_name="item"
     )
     item_id = models.IntegerField( #소유한 유저 아이디.
         max_length=4
@@ -69,4 +71,4 @@ class UserItems(models.Model):
         max_length=20,
     )
 
-    related_name="item"
+    
