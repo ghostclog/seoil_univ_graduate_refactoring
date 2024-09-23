@@ -47,7 +47,7 @@ class Message(models.Model):
         max_length=250,
     )
     category = models.CharField( #메세지 분류
-        max_length=250,
+        max_length=20,
     )
     received_time = models.DateTimeField( #받은 시각
         auto_now_add = True,
@@ -64,9 +64,7 @@ class UserItems(models.Model):
         on_delete=models.CASCADE,
         related_name="item"
     )
-    item_id = models.IntegerField( #소유한 유저 아이디.
-        max_length=4
-    )
+    item_id = models.IntegerField() #소유한 유저 아이디.
     item_category = models.CharField( #해당 아이디 카테고리
         max_length=20,
     )
