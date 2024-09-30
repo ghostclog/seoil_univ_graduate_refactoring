@@ -8,7 +8,6 @@ from django.contrib.auth.models import AbstractUser
 
 class User(AbstractUser):
     """유저 정보 테이블"""
-
     first_name = models.CharField(
         max_length=150,
         editable=False,
@@ -17,12 +16,16 @@ class User(AbstractUser):
         max_length=150,
         editable=False,
     )
+    nickname = models.CharField( #닉네임
+        unique=True,
+        max_length=20,
+    ) 
     is_staff = models.BooleanField( #관리자 여부
         default=False,
     )
     user_comment = models.CharField( #유저 자기 소개
         max_length=200,
-        null=True
+        default="",
     )
     user_point = models.IntegerField( #유저 소유 포인트
         default=50,
@@ -31,6 +34,18 @@ class User(AbstractUser):
         upload_to="profile/",
         null=True
     )
+    def __str__(self): #유저 아이디와 이름 보여줌
+        return f"id: {self.username} / name: {self.nickname}"
+
+    def num_of_posts(self): # 작성한 공용 게시판 게시글 수
+        return self.common_posts.count()
+    
+    def num_of_comments(self): # 작성한 공용 게시판 댓글 수
+        return self.common_comments.count()
+    
+    def num_of_not_read_messages(self): # 안읽은 알람 수
+        return self.alerts.filter(about_chk=False).count()
+
 
 class Message(models.Model):
     """메세지(알림) 테이블"""
@@ -38,7 +53,7 @@ class Message(models.Model):
     user_id = models.ForeignKey( #받는 유저 아이디
         User, 
         on_delete=models.CASCADE,
-        related_name="alert"
+        related_name="alerts"
     )
     title = models.CharField( #쪽지 제목
         max_length=50,
@@ -55,6 +70,9 @@ class Message(models.Model):
     about_chk = models.BooleanField( #메세지 확인 여부
         default=False,
     )
+    def __str__(self) -> str: # 메세지 받은 아이디와 메세지 제목
+        return f"{self.user_id}: {self.title}"
+
 
 class UserItems(models.Model): 
     """유저 소유 아이템 정보 테이블"""
@@ -68,5 +86,6 @@ class UserItems(models.Model):
     item_category = models.CharField( #해당 아이디 카테고리
         max_length=20,
     )
-
+    def __str__(self): # 소유한 아이템 목록
+        return f"{self.user_id}: {self.item_id}/{self.item_category}"
     

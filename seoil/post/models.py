@@ -22,6 +22,17 @@ class Post(AbtractPost): #게시글
         null=True,
         on_delete=models.CASCADE,
     )
+    writer = models.ForeignKey( #댓글 작성자
+        "user.User",
+        related_name="common_posts",
+        on_delete=models.CASCADE,
+    )
+
+    def __str__(self):
+        return self.title
+    
+    def total_comments(self):
+        return self.comments.count()
 
 
 class PostComment(AbtractComment):
@@ -30,3 +41,11 @@ class PostComment(AbtractComment):
         related_name="comments",
         on_delete=models.CASCADE,
     )
+    writer = models.ForeignKey( #댓글 작성자
+        "user.User",
+        related_name="common_comments",
+        on_delete=models.CASCADE,
+    )
+
+    def __str__(self):
+        return f"{self.post.title} / {self.writer}: {self.contents}"

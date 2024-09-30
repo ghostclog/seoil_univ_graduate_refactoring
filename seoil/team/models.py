@@ -43,6 +43,14 @@ class Team(models.Model): #팀
         um.User,
         related_name="apply_log",
     )
+    def __str__(self): #팀명 반환
+        return self.team_name
+    
+    def num_of_teamate(self): #가입된 팀원 수
+        return self.members.count()
+    
+    def num_of_teampost(self): # 팀에서 작성된 게시글 수
+        return self.team_posts.count()
 
 class TeamPost(AbtractPost): #팀 게시글
     team = models.ForeignKey(
@@ -54,6 +62,16 @@ class TeamPost(AbtractPost): #팀 게시글
         upload_to='documents/',
         null=True,
     )
+    writer = models.ForeignKey( #게시글 작성자
+        "user.User",
+        related_name="team_posts",
+        on_delete=models.CASCADE,
+    )
+    def __str__(self): #어느팀에서 작성된 게시글인지
+        return f"{self.team}: {self.title}"
+    
+    def num_of_comment(self):
+        return self.comments.count()
 
 class ChatLog(models.Model): #채팅로그/유니티 런처에서 접속 후 나눈 채팅 로그에 대한 정보
     writer = models.ForeignKey( #작성자
@@ -61,7 +79,7 @@ class ChatLog(models.Model): #채팅로그/유니티 런처에서 접속 후 나
         related_name="chats",
         on_delete=models.CASCADE,
     )
-    team = models.ForeignKey( #팀
+    team = models.ForeignKey( #팀명
         Team,
         related_name="chats",
         on_delete=models.CASCADE,
@@ -73,6 +91,9 @@ class ChatLog(models.Model): #채팅로그/유니티 런처에서 접속 후 나
         auto_now_add=True
     )
 
+    def __str__(self):
+        return f"{self.writer}({self.team}):{self.chat_contents}"
+    
 class TeamPostComment(AbtractComment): #팀 게시글 테이블
     post = models.ForeignKey( #연결 게시글
         TeamPost,
@@ -83,3 +104,10 @@ class TeamPostComment(AbtractComment): #팀 게시글 테이블
         Team,
         on_delete=models.CASCADE,
     )
+    writer = models.ForeignKey( #작성자
+        um.User,
+        related_name="chats",
+        on_delete=models.CASCADE,
+    )
+    def __str__(self):
+        return f"{self.post.title}({self.team.team_name}) / {self.writer}: {self.contents}"
