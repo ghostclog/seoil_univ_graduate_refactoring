@@ -1,5 +1,4 @@
 from django.db import models
-from user import models as um
 from etc.models import AbtractPost,AbtractComment
 # Create your models here.
 
@@ -20,7 +19,7 @@ class Team(models.Model): #팀
         max_length=50
     )
     team_master = models.ForeignKey( #팀장
-        um.User,
+        "user.User",
         related_name="team_masters",
         on_delete=models.CASCADE,
     )
@@ -36,11 +35,11 @@ class Team(models.Model): #팀
         choices=category_choice,
     )
     members = models.ManyToManyField( #팀 구성원
-        um.User,
+        "user.User",
         related_name="teams",
     )
     team_apply_log = models.ManyToManyField( #팀 신청 로그
-        um.User,
+        "user.User",
         related_name="apply_log",
     )
     def __str__(self): #팀명 반환
@@ -54,13 +53,14 @@ class Team(models.Model): #팀
 
 class TeamPost(AbtractPost): #팀 게시글
     team = models.ForeignKey(
-        Team,
+        "team.Team",
         related_name="team_posts",
         on_delete=models.CASCADE,
     )
     post_file = models.FileField( #첨부 파일
         upload_to='documents/',
         null=True,
+        blank=True,
     )
     writer = models.ForeignKey( #게시글 작성자
         "user.User",
@@ -75,12 +75,12 @@ class TeamPost(AbtractPost): #팀 게시글
 
 class ChatLog(models.Model): #채팅로그/유니티 런처에서 접속 후 나눈 채팅 로그에 대한 정보
     writer = models.ForeignKey( #작성자
-        um.User,
+        "user.User",
         related_name="chats",
         on_delete=models.CASCADE,
     )
     team = models.ForeignKey( #팀명
-        Team,
+        "team.Team",
         related_name="chats",
         on_delete=models.CASCADE,
     )
@@ -96,7 +96,7 @@ class ChatLog(models.Model): #채팅로그/유니티 런처에서 접속 후 나
     
 class TeamPostComment(AbtractComment): #팀 게시글 테이블
     post = models.ForeignKey( #연결 게시글
-        TeamPost,
+        "team.TeamPost",
         related_name="comments",
         on_delete=models.CASCADE,
     )
@@ -105,7 +105,7 @@ class TeamPostComment(AbtractComment): #팀 게시글 테이블
         on_delete=models.CASCADE,
     )
     writer = models.ForeignKey( #작성자
-        um.User,
+        "user.User",
         related_name="chats",
         on_delete=models.CASCADE,
     )

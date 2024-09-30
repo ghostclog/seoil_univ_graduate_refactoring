@@ -26,13 +26,15 @@ class User(AbstractUser):
     user_comment = models.CharField( #유저 자기 소개
         max_length=200,
         default="",
+        blank=True
     )
     user_point = models.IntegerField( #유저 소유 포인트
         default=50,
     )
     user_profile_photo = models.ImageField( # 유저 프로필 사진
         upload_to="profile/",
-        null=True
+        null=True,
+        blank=True,
     )
     def __str__(self): #유저 아이디와 이름 보여줌
         return f"id: {self.username} / name: {self.nickname}"
@@ -51,7 +53,7 @@ class Message(models.Model):
     """메세지(알림) 테이블"""
 
     user_id = models.ForeignKey( #받는 유저 아이디
-        User, 
+        "user.User", 
         on_delete=models.CASCADE,
         related_name="alerts"
     )
