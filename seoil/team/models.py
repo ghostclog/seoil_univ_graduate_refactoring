@@ -2,7 +2,7 @@ from django.db import models
 from etc.models import AbtractPost,AbtractComment
 # Create your models here.
 
-class Team(models.Model): #팀
+class Teams(models.Model): #팀
     category_choice = [ #팀 카테고리 종류 제한하기
         ("IT","IT"),
         ("문화","문화"),
@@ -19,7 +19,7 @@ class Team(models.Model): #팀
         max_length=50
     )
     team_master = models.ForeignKey( #팀장
-        "user.User",
+        "user.Users",
         related_name="team_masters",
         on_delete=models.CASCADE,
     )
@@ -35,11 +35,11 @@ class Team(models.Model): #팀
         choices=category_choice,
     )
     members = models.ManyToManyField( #팀 구성원
-        "user.User",
+        "user.Users",
         related_name="teams",
     )
     team_apply_log = models.ManyToManyField( #팀 신청 로그
-        "user.User",
+        "user.Users",
         related_name="apply_log",
     )
     def __str__(self): #팀명 반환
@@ -51,9 +51,9 @@ class Team(models.Model): #팀
     def num_of_teampost(self): # 팀에서 작성된 게시글 수
         return self.team_posts.count()
 
-class TeamPost(AbtractPost): #팀 게시글
+class TeamPosts(AbtractPost): #팀 게시글
     team = models.ForeignKey(
-        "team.Team",
+        "team.Teams",
         related_name="team_posts",
         on_delete=models.CASCADE,
     )
@@ -63,7 +63,7 @@ class TeamPost(AbtractPost): #팀 게시글
         blank=True,
     )
     writer = models.ForeignKey( #게시글 작성자
-        "user.User",
+        "user.Users",
         related_name="team_posts",
         on_delete=models.CASCADE,
     )
@@ -75,12 +75,12 @@ class TeamPost(AbtractPost): #팀 게시글
 
 class ChatLog(models.Model): #채팅로그/유니티 런처에서 접속 후 나눈 채팅 로그에 대한 정보
     writer = models.ForeignKey( #작성자
-        "user.User",
+        "user.Users",
         related_name="chats",
         on_delete=models.CASCADE,
     )
     team = models.ForeignKey( #팀명
-        "team.Team",
+        "team.Teams",
         related_name="chats",
         on_delete=models.CASCADE,
     )
@@ -96,17 +96,17 @@ class ChatLog(models.Model): #채팅로그/유니티 런처에서 접속 후 나
     
 class TeamPostComment(AbtractComment): #팀 게시글 테이블
     post = models.ForeignKey( #연결 게시글
-        "team.TeamPost",
-        related_name="comments",
+        "team.TeamPosts",
+        related_name="team_post_comment",
         on_delete=models.CASCADE,
     )
     team = models.ForeignKey( #어느 팀 포스트인지
-        Team,
+        "team.Teams",
         on_delete=models.CASCADE,
     )
     writer = models.ForeignKey( #작성자
-        "user.User",
-        related_name="chats",
+        "user.Users",
+        related_name="team_post_comment",
         on_delete=models.CASCADE,
     )
     def __str__(self):

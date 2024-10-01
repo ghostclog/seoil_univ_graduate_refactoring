@@ -1,8 +1,8 @@
 from django.contrib import admin
-from .models import User,Message,UserItems
+from .models import Users,Messages,UserItems
 from django.contrib.auth.admin import UserAdmin
 
-@admin.register(User)
+@admin.register(Users)
 class CustomUserAdmin(UserAdmin):
     fieldsets=(
         (
@@ -28,18 +28,18 @@ class CustomUserAdmin(UserAdmin):
         ),
     )
     readonly_fields=("date_joined",)
-    list_display = "user_point","is_staff","num_of_posts","num_of_comments",
+    list_display = "__str__","user_point","is_staff","num_of_posts","num_of_comments",
     search_fields = ("nickname",)
-    list_filter = "nickname","user_point","date_joined","num_of_posts","num_of_comments",
+    list_filter = "nickname","user_point","date_joined",
 
-@admin.register(Message)
+@admin.register(Messages)
 class CustomMessageAdmin(admin.ModelAdmin):
     fieldsets=(
         (
             "메세지 정보",
             {
                 "fields":(
-                    "user_id",
+                    "user",
                     "title",
                     "message",
                     "category",
@@ -49,8 +49,8 @@ class CustomMessageAdmin(admin.ModelAdmin):
         ),
     )
     readonly_fields="received_time","about_chk",
-    list_display = "message","category"
-    search_fields = ("user_id",)
+    list_display = "__str__","message","category"
+    search_fields = ("user__username","user__nickname")
 
 @admin.register(UserItems)
 class CustomUserItemseAdmin(admin.ModelAdmin):
@@ -59,13 +59,14 @@ class CustomUserItemseAdmin(admin.ModelAdmin):
             "메세지 정보",
             {
                 "fields":(
-                    "user_id",
+                    "user",
                     "item_id",
                     "item_category",
                 ),
             },
         ),
     )
-    readonly_fields="received_time","about_chk",
-    search_fields = "user_id","item_id","item_category",
-    list_filter = "user_id","item_id","item_category",
+    # readonly_fields=()
+    search_fields = "user","item_id","item_category",
+    list_filter = "user","item_id","item_category",
+    list_display =("__str__",)

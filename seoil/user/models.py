@@ -6,7 +6,7 @@ from django.contrib.auth.models import AbstractUser
 유저 앱에서 사용되는 테이블들입니다.
 """
 
-class User(AbstractUser):
+class Users(AbstractUser):
     """유저 정보 테이블"""
     first_name = models.CharField(
         max_length=150,
@@ -49,11 +49,11 @@ class User(AbstractUser):
         return self.alerts.filter(about_chk=False).count()
 
 
-class Message(models.Model):
+class Messages(models.Model):
     """메세지(알림) 테이블"""
 
-    user_id = models.ForeignKey( #받는 유저 아이디
-        "user.User", 
+    user = models.ForeignKey( #받는 유저 아이디
+        "user.Users", 
         on_delete=models.CASCADE,
         related_name="alerts"
     )
@@ -79,8 +79,8 @@ class Message(models.Model):
 class UserItems(models.Model): 
     """유저 소유 아이템 정보 테이블"""
 
-    user_id = models.ForeignKey( #소유 중인 유저 아이디
-        User, 
+    user = models.ForeignKey( #소유 중인 유저 아이디
+        "user.Users", 
         on_delete=models.CASCADE,
         related_name="item"
     )
