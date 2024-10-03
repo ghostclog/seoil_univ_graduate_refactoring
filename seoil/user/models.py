@@ -74,6 +74,10 @@ class Messages(models.Model):
     )
     def __str__(self) -> str: # 메세지 받은 아이디와 메세지 제목
         return f"{self.user_id}: {self.title}"
+    
+    class Meta:
+        verbose_name = "메세지/알림" 
+        verbose_name_plural = "메세지/알림 테이블"
 
 
 class UserItems(models.Model): 
@@ -90,4 +94,8 @@ class UserItems(models.Model):
     )
     def __str__(self): # 소유한 아이템 목록
         return f"{self.user_id}: {self.item_id}/{self.item_category}"
+    
+    class Meta:
+        verbose_name = "유저 소유 아이템" 
+        verbose_name_plural = "유저 소유 아이템 테이블"
     

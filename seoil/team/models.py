@@ -50,6 +50,10 @@ class Teams(models.Model): #팀
     
     def num_of_teampost(self): # 팀에서 작성된 게시글 수
         return self.team_posts.count()
+    
+    class Meta:
+        verbose_name = "팀" 
+        verbose_name_plural = "팀 테이블"
 
 class TeamPosts(AbtractPost): #팀 게시글
     team = models.ForeignKey(
@@ -72,6 +76,10 @@ class TeamPosts(AbtractPost): #팀 게시글
     
     def num_of_comment(self):
         return self.comments.count()
+    
+    class Meta:
+        verbose_name = "팀 게시글" 
+        verbose_name_plural = "팀 게시글 테이블"  
 
 class ChatLog(models.Model): #채팅로그/유니티 런처에서 접속 후 나눈 채팅 로그에 대한 정보
     writer = models.ForeignKey( #작성자
@@ -94,6 +102,10 @@ class ChatLog(models.Model): #채팅로그/유니티 런처에서 접속 후 나
     def __str__(self):
         return f"{self.writer}({self.team}):{self.chat_contents}"
     
+    class Meta:
+        verbose_name = "채팅 로그" 
+        verbose_name_plural = "채팅 로그 테이블"     
+    
 class TeamPostComment(AbtractComment): #팀 게시글 테이블
     post = models.ForeignKey( #연결 게시글
         "team.TeamPosts",
@@ -111,3 +123,7 @@ class TeamPostComment(AbtractComment): #팀 게시글 테이블
     )
     def __str__(self):
         return f"{self.post.title}({self.team.team_name}) / {self.writer}: {self.contents}"
+    
+    class Meta:
+        verbose_name = "팀 게시글 댓글" 
+        verbose_name_plural = "팀 게시글 댓글 테이블"    

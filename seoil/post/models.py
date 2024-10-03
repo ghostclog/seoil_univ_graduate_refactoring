@@ -33,6 +33,10 @@ class Posts(AbtractPost): #게시글
     
     def total_comments(self):
         return self.comments.count()
+    
+    class Meta:
+        verbose_name = "공용 게시글" 
+        verbose_name_plural = "공용 게시글 테이블"
 
 
 class PostComments(AbtractComment):
@@ -49,3 +53,7 @@ class PostComments(AbtractComment):
 
     def __str__(self):
         return f"{self.post.title} / {self.writer}: {self.contents}"
+    
+    class Meta:
+        verbose_name = "게시글 댓글" 
+        verbose_name_plural = "게시글 댓글 테이블"

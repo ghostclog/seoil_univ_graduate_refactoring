@@ -22,7 +22,7 @@ class CustomTeamAdmin(admin.ModelAdmin):
     readonly_fields=("team_created",)
     list_display = "__str__","team_master","team_category","num_of_teamate","num_of_teampost",
     search_fields = "team_name","team_master__nickname","team_category",
-    list_filter = "team_name","team_category",
+    list_filter = ("team_category",)
 
 @admin.register(TeamPosts)
 class CustomTeamPostAdmin(admin.ModelAdmin):
@@ -46,7 +46,7 @@ class CustomTeamPostAdmin(admin.ModelAdmin):
     readonly_fields=("created_at",)
     list_display = "__str__","writer","open_num","recommend_num",
     search_fields = ("writer__nickname",)
-    list_filter = "writer__nickname","open_num","recommend_num",
+    list_filter = "open_num","recommend_num",
 
 @admin.register(ChatLog)
 class CustomChatLogAdmin(admin.ModelAdmin):
@@ -65,7 +65,7 @@ class CustomChatLogAdmin(admin.ModelAdmin):
     )
     readonly_fields=("chat_time",)
     search_fields = ("writer__nickname","team","chat_contents",)
-    list_filter = "writer__nickname","team",
+    list_filter = ("team",)
     list_display = ("__str__",)
 
 
@@ -87,7 +87,7 @@ class CustomTeamPostCommentAdmin(admin.ModelAdmin):
     )
     readonly_fields=("created_at",)
     search_fields = "writer__nickname","post","team",
-    list_filter = "writer__nickname","team","post",
+    list_filter = ("team",)
     list_display = ("__str__",)
 
 

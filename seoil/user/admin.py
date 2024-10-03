@@ -30,7 +30,7 @@ class CustomUserAdmin(UserAdmin):
     readonly_fields=("date_joined",)
     list_display = "__str__","user_point","is_staff","num_of_posts","num_of_comments",
     search_fields = ("nickname",)
-    list_filter = "nickname","user_point","date_joined",
+    list_filter = ("user_point",)
 
 @admin.register(Messages)
 class CustomMessageAdmin(admin.ModelAdmin):
