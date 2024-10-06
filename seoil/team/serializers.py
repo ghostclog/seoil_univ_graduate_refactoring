@@ -1,6 +1,7 @@
 from .models import Teams,TeamPosts,ChatLog,TeamPostComment
 from rest_framework import serializers
 
+
 class TeamsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Teams
@@ -20,3 +21,5 @@ class TeamPostCommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = TeamPostComment
         fields = '__all__'
+
+
