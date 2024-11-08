@@ -6,8 +6,7 @@ from django.http import JsonResponse
 from django.contrib.auth import authenticate, login
 from .serializers import (
     UserRegistSerializer,
-    UserSerializerForMyPage,
-    TeamListSerializerForMypage
+    UserSerializerForMyPage
 )
 
 ### 회원가입 / 로그인 영역 ###
@@ -42,8 +41,10 @@ class UserRegister(APIView):
             return Response({'message': '회원가입 성공','data':serializer.data},status=200)
         else:
             return Response(serializer.errors,status=400)
-         
-# 이메일 인증
+
+# 아이디 찾기
+
+# 비밀번호 찾기
 
 ### 마이페이지 기능 ###
 # 마이페이지 접속(get) / 회원 탈퇴(delete)
@@ -54,8 +55,7 @@ class MyPage(APIView):
         # 인증된 사용자
         user = Users.objects.get(username = request.user.username)
         my_page_seri = UserSerializerForMyPage(user)
-        team_list_seri = TeamListSerializerForMypage(user)
-        return Response({'userdata':my_page_seri.data,'teamlist':team_list_seri.data},status=200)
+        return Response({'userdata':my_page_seri.data},status=200)
 
 # 코멘트 변경
 class Comment(APIView):
@@ -111,5 +111,32 @@ class Password(APIView):
         user.save()
         return Response({'message': '비밀번호가 성공적으로 변경되었습니다.'}, status=200)
 
+# 프로필 사진 수정
 
-# 팀리스트에서 팀 선택시
+### 아이템 관련 ###
+# 아이템 목록
+
+# 아이템 사기
+
+# 가챠 결과 저장
+
+### 쪽지 관련 ###
+# 쪽지함 보기
+
+# 쪽지 삭제
+
+# 쪽지 전체 삭제
+
+# 읽지 않은 쪽지 수
+
+
+
+
+### 유저 관련 기타 기능들 ###
+# 이메일 인증
+class SendMail(APIView):
+    pass
+
+class ItemList(APIView):
+    pass
+
