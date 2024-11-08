@@ -33,7 +33,7 @@ class UserSerializerForMyPage(serializers.ModelSerializer):
             'user_point',
             'user_profile_photo',
             'num_of_posts',
-            'num_of_comments'
+            'num_of_comments',
         )
 
     def get_num_of_posts(self, obj):
@@ -92,6 +92,6 @@ class TeamListSerializerForMypage(serializers.ModelSerializer):
     class Meta:
         model = Users
         fields = (
-            'teams'
+            'teams',
         )
 
